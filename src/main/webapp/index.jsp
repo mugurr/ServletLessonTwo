@@ -12,7 +12,7 @@
     <label for="value1">Первое значение</label>
     <input type="text" id="value1" name="value1" required>
 
-    <label for="value1">Второе значение</label>
+    <label for="value2">Второе значение</label>
     <input type="text" id="value2" name="value2" required>
 
     <label for="operation1">Операция</label>
