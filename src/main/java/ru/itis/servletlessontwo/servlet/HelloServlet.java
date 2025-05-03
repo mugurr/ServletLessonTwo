@@ -1,6 +1,7 @@
-package ru.itis.servletlessontwo;
+package ru.itis.servletlessontwo.servlet;
 
 import java.io.*;
+
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
