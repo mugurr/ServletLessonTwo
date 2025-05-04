@@ -21,5 +21,6 @@
     <button type="submit">Посчитать</button>
 </form>
 <a href="hello-servlet">Hello Servlet</a>
+<a href="test-db">Test BD</a>
 </body>
 </html>
