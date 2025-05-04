@@ -31,6 +31,12 @@
             <artifactId>postgresql</artifactId>
             <version>42.7.4</version>
         </dependency>
+        <!-- Зависимость для управления JDBC -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jdbc</artifactId>
+            <version>3.3.5</version>
+        </dependency>
         <!-- Зависимость для управления Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
