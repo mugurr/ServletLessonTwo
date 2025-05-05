@@ -1,5 +1,6 @@
 package ru.itis.servletlessontwo.repository;
 
+import ru.itis.servletlessontwo.dto.request.CategoryRequest;
 import ru.itis.servletlessontwo.model.ProductEntity;
 
 import java.util.List;
