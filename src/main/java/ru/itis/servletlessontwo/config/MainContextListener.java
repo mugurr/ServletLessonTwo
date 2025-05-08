@@ -7,6 +7,12 @@ import jakarta.servlet.annotation.WebListener;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import ru.itis.servletlessontwo.mapper.ProductMapper;
+import ru.itis.servletlessontwo.mapper.impl.ProductMapperImpl;
+import ru.itis.servletlessontwo.repository.ProductRepository;
+import ru.itis.servletlessontwo.repository.impl.ProductRepositoryImpl;
+import ru.itis.servletlessontwo.service.ProductService;
+import ru.itis.servletlessontwo.service.impl.ProductServiceImpl;
 import ru.itis.servletlessontwo.utils.PropertyReader;
 
 import javax.sql.DataSource;
@@ -25,6 +31,15 @@ public class MainContextListener implements ServletContextListener {
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         context.setAttribute("jdbcTemplate", jdbcTemplate);
+
+        ProductMapper productMapper = new ProductMapperImpl();
+        context.setAttribute("productMapper", productMapper);
+
+        ProductRepository productRepository = new ProductRepositoryImpl(jdbcTemplate, productMapper);
+        context.setAttribute("productRepository", productRepository);
+
+        ProductService productService = new ProductServiceImpl(productRepository, productMapper);
+        context.setAttribute("productService", productService);
     }
 
     private DataSource dataSource() {
