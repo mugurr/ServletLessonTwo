@@ -28,7 +28,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private static final String SQL_INSERT_PRODUCT = "insert into products (name, description, price, image) values (?, ?, ?, ?)";
 
-    private final ProductMapper productMapper =new ProductMapperImpl();
+    private final ProductMapper productMapper;
 
     @Override
     public List<ProductEntity> getAllProducts() {
