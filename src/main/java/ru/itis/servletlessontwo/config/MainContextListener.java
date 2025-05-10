@@ -15,7 +15,9 @@ import ru.itis.servletlessontwo.repository.CategoryRepository;
 import ru.itis.servletlessontwo.repository.ProductRepository;
 import ru.itis.servletlessontwo.repository.impl.CategoryRepositoryImpl;
 import ru.itis.servletlessontwo.repository.impl.ProductRepositoryImpl;
+import ru.itis.servletlessontwo.service.CategoryService;
 import ru.itis.servletlessontwo.service.ProductService;
+import ru.itis.servletlessontwo.service.impl.CategoryServiceImpl;
 import ru.itis.servletlessontwo.service.impl.ProductServiceImpl;
 import ru.itis.servletlessontwo.utils.PropertyReader;
 
@@ -47,6 +49,9 @@ public class MainContextListener implements ServletContextListener {
 
         ProductRepository productRepository = new ProductRepositoryImpl(jdbcTemplate, categoryRepository, productMapper);
         context.setAttribute("productRepository", productRepository);
+
+        CategoryService categoryService = new CategoryServiceImpl(categoryRepository, categoryMapper);
+        context.setAttribute("categoryService", categoryService);
 
         ProductService productService = new ProductServiceImpl(productRepository, productMapper);
         context.setAttribute("productService", productService);

@@ -1,6 +1,9 @@
 package ru.itis.servletlessontwo.dto.response;
 
 import lombok.*;
+import ru.itis.servletlessontwo.model.CategoryEntity;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -19,4 +22,6 @@ public class ProductResponse {
     private int quantity;
 
     private String image;
+
+    private List<CategoryEntity> category;
 }
