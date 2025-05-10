@@ -9,6 +9,7 @@ import ru.itis.servletlessontwo.dto.request.CategoryRequest;
 import ru.itis.servletlessontwo.mapper.ProductMapper;
 import ru.itis.servletlessontwo.mapper.impl.ProductMapperImpl;
 import ru.itis.servletlessontwo.model.ProductEntity;
+import ru.itis.servletlessontwo.repository.CategoryRepository;
 import ru.itis.servletlessontwo.repository.ProductRepository;
 
 import java.sql.PreparedStatement;
@@ -28,11 +29,17 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private static final String SQL_INSERT_PRODUCT = "insert into products (name, description, price, image) values (?, ?, ?, ?)";
 
+    private final CategoryRepository categoryRepository;
+
     private final ProductMapper productMapper;
 
     @Override
     public List<ProductEntity> getAllProducts() {
         List<ProductEntity> products = jdbcTemplate.query(SQL_SELECT_ALL_PRODUCTS, productMapper);
+
+        for (ProductEntity product : products) {
+            product.setCategories(categoryRepository.findCategoriesByProductId(product.getId()));
+        }
 
         return products;
     }
@@ -41,6 +48,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Optional<ProductEntity> findProductById(Long id) {
         try {
             ProductEntity product = jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, productMapper, id);
+
+            if (product != null) {
+                product.setCategories(categoryRepository.findCategoriesByProductId(id));
+            }
+
             return Optional.ofNullable(product);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -61,6 +73,10 @@ public class ProductRepositoryImpl implements ProductRepository {
                 return ps;
             }, holder);
             Long id = Objects.requireNonNull(holder.getKey()).longValue();
+
+            if (product.getCategories() == null) {
+                categoryRepository.saveProductCategories(id, category);
+            }
 
             return findProductById(id);
         } catch (Exception e) {

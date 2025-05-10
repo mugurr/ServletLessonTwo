@@ -45,7 +45,7 @@ public class MainContextListener implements ServletContextListener {
         CategoryRepository categoryRepository = new CategoryRepositoryImpl(jdbcTemplate, categoryMapper);
         context.setAttribute("categoryRepository", categoryRepository);
 
-        ProductRepository productRepository = new ProductRepositoryImpl(jdbcTemplate, productMapper);
+        ProductRepository productRepository = new ProductRepositoryImpl(jdbcTemplate, categoryRepository, productMapper);
         context.setAttribute("productRepository", productRepository);
 
         ProductService productService = new ProductServiceImpl(productRepository, productMapper);
