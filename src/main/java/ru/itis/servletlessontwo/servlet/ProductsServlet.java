@@ -40,7 +40,7 @@ public class ProductsServlet extends HttpServlet {
         session.setAttribute("products", listProductsResponse);
         session.setAttribute("categories", listCategoryResponse);
 
-        req.getRequestDispatcher("jsp/products.jsp").forward(req, resp);
+        req.getRequestDispatcher("jsp/productsispr.jsp").forward(req, resp);
 
     }
 

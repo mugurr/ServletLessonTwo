@@ -207,7 +207,7 @@
 
         <!-- Кнопка "Избранное" справа -->
         <div class="right-buttons">
-            <button onclick="location.href='/favourites'">Избранное"</button>
+            <button onclick="location.href='/favourites'">Избранное</button>
         </div>
     </div>
 
@@ -215,6 +215,9 @@
     <div class="content">
         <!-- Левая часть: Фильтр -->
         <div class="filter-section">
+            <label>
+                <input type="checkbox" class="category-filter" value="all" checked> Все категории
+            </label><br/>
             <c:forEach var="category" items="${sessionScope.categories.categories}">
                 <label>
                     <input type="checkbox" value="${category.name}" class="category-filter"> ${category.name}
@@ -227,38 +230,22 @@
             <c:forEach var="product" items="${sessionScope.products.products}">
                 <c:set var="categoryNames" value="" />
                 <c:forEach var="category" items="${product.category}">
-                    <c:set var="categoryNames" value="${categoryNames += ' ' += category.name}" />
+                    <c:set var="categoryNames" value="${categoryNames} ${category.name}" />
                 </c:forEach>
 
-            <div class="product-item" data-categories="${categoryNames}">
-                <img src="data:image/jpeg;base64,${product.image}" alt="${product.name}">
-                <h3>${product.name}</h3>
-                <p>Цена: $${product.price}</p>
-                <h4 style="display: none;">Описание: ${product.description}</h4>
-                <div class="buttons">
-                    <button onclick="showDetails(this)">Подробнее</button>
-<%--                    <form method="post" action="toggleProduct" style="display: inline;">--%>
-<%--                        <input type="hidden" name="productId" value="${product.id}">--%>
-<%--                        <input type="hidden" name="isFavorite" id="isFavorite_${product.id}" value="${product.favorite}">--%>
-<%--                        <button type="submit" data-favorite="${product.favorite}">--%>
-<%--                            <c:choose>--%>
-<%--                                <c:when test="${product.favorite}">--%>
-<%--                                    Удалить из избранного--%>
-<%--                                </c:when>--%>
-<%--                                <c:otherwise>--%>
-<%--                                    Добавить в избранное--%>
-<%--                                </c:otherwise>--%>
-<%--                            </c:choose>--%>
-<%--                        </button>--%>
-<%--                    </form>--%>
+                <div class="product-item" data-categories="${categoryNames.trim()}">
+                    <img src="data:image/jpeg;base64,${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>Цена: $${product.price}</p>
+                    <h4 style="display: none;">Описание: ${product.description}</h4>
+                    <div class="buttons">
+                        <button onclick="showDetails(this)">Подробнее</button>
+                    </div>
                 </div>
-            </div>
             </c:forEach>
-
         </div>
     </div>
 </div>
-
 
 <!-- Модальное окно -->
 <div id="modal" class="modal">
@@ -277,12 +264,8 @@
         const description = productItem.querySelector('h4').innerText;
         const price = productItem.querySelector('p').innerText;
 
-        // Заполняем модальное окно данными
         document.getElementById('modal-title').innerText = title;
         document.getElementById('modal-description').innerText = price + "\n" + description;
-
-
-        // Показываем модальное окно
         document.getElementById('modal').style.display = 'block';
     }
 
@@ -292,18 +275,50 @@
     }
 
     // Фильтр по категориям
-    document.querySelector('.category-filter').forEach(checkBox => {
-        checkBox.addEventListener('change', function () {
-            const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
-            const products = document.querySelectorAll('.product-item');
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.category-filter');
 
+        // Обработчик изменения состояния чекбоксов
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                filterProducts();
+            });
+        });
+
+        // Первоначальная фильтрация
+        filterProducts();
+    });
+
+    function filterProducts() {
+        const allCheckbox = document.querySelector('.category-filter[value="all"]');
+        const categoryCheckboxes = document.querySelectorAll('.category-filter:not([value="all"])');
+        const products = document.querySelectorAll('.product-item');
+
+        // Если выбран "Все категории", снимаем выбор с остальных
+        if (allCheckbox.checked) {
+            categoryCheckboxes.forEach(cb => cb.checked = false);
+        } else {
+            allCheckbox.checked = false;
+        }
+
+        // Получаем выбранные категории
+        const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
+
+        // Если ничего не выбрано или выбрано "Все категории", показываем все товары
+        if (selectedCategories.length === 0 || selectedCategories.includes('all')) {
             products.forEach(product => {
-                const productCategories = product.dataset.categories.split(' ');
-                const isVivsible = selectedCategories.length === 0 || selectedCategories.every(category => productCategories.includes(category));
-                product.style.display = isVivsible ? 'flex' : 'none';
-            })
-        })
-    })
+                product.style.display = 'flex';
+            });
+            return;
+        }
+
+        // Фильтрация товаров
+        products.forEach(product => {
+            const productCategories = product.dataset.categories.split(' ');
+            const isVisible = selectedCategories.some(category => productCategories.includes(category));
+            product.style.display = isVisible ? 'flex' : 'none';
+        });
+    }
 </script>
 
 </body>
