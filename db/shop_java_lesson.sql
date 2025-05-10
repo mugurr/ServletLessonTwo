@@ -21,10 +21,10 @@ INSERT INTO public.products (id, name, description, price, quantity, image)
 VALUES
     (
      DEFAULT,
-     'orange',
-     'я вкусный апельсин',
-     30.4,
-     30,
+     'картошка',
+     'молодая картошка',
+     230.4,
+     1000,
      null
     );
 
