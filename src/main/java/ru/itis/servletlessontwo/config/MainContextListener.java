@@ -7,9 +7,13 @@ import jakarta.servlet.annotation.WebListener;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import ru.itis.servletlessontwo.mapper.CategoryMapper;
 import ru.itis.servletlessontwo.mapper.ProductMapper;
+import ru.itis.servletlessontwo.mapper.impl.CategoryMapperImpl;
 import ru.itis.servletlessontwo.mapper.impl.ProductMapperImpl;
+import ru.itis.servletlessontwo.repository.CategoryRepository;
 import ru.itis.servletlessontwo.repository.ProductRepository;
+import ru.itis.servletlessontwo.repository.impl.CategoryRepositoryImpl;
 import ru.itis.servletlessontwo.repository.impl.ProductRepositoryImpl;
 import ru.itis.servletlessontwo.service.ProductService;
 import ru.itis.servletlessontwo.service.impl.ProductServiceImpl;
@@ -35,11 +39,18 @@ public class MainContextListener implements ServletContextListener {
         ProductMapper productMapper = new ProductMapperImpl();
         context.setAttribute("productMapper", productMapper);
 
+        CategoryMapper categoryMapper = new CategoryMapperImpl();
+        context.setAttribute("categoryMapper", categoryMapper);
+
+        CategoryRepository categoryRepository = new CategoryRepositoryImpl(jdbcTemplate, categoryMapper);
+        context.setAttribute("categoryRepository", categoryRepository);
+
         ProductRepository productRepository = new ProductRepositoryImpl(jdbcTemplate, productMapper);
         context.setAttribute("productRepository", productRepository);
 
         ProductService productService = new ProductServiceImpl(productRepository, productMapper);
         context.setAttribute("productService", productService);
+
     }
 
     private DataSource dataSource() {
