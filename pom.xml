@@ -37,6 +37,11 @@
             <artifactId>spring-data-jdbc</artifactId>
             <version>3.3.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
         <!-- Зависимость для управления Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
