@@ -9,12 +9,16 @@ import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.itis.servletlessontwo.mapper.CategoryMapper;
 import ru.itis.servletlessontwo.mapper.ProductMapper;
+import ru.itis.servletlessontwo.mapper.UserMapper;
 import ru.itis.servletlessontwo.mapper.impl.CategoryMapperImpl;
 import ru.itis.servletlessontwo.mapper.impl.ProductMapperImpl;
+import ru.itis.servletlessontwo.mapper.impl.UserMapperImpl;
 import ru.itis.servletlessontwo.repository.CategoryRepository;
 import ru.itis.servletlessontwo.repository.ProductRepository;
+import ru.itis.servletlessontwo.repository.UserRepository;
 import ru.itis.servletlessontwo.repository.impl.CategoryRepositoryImpl;
 import ru.itis.servletlessontwo.repository.impl.ProductRepositoryImpl;
+import ru.itis.servletlessontwo.repository.impl.UserRepositoryImpl;
 import ru.itis.servletlessontwo.service.CategoryService;
 import ru.itis.servletlessontwo.service.ProductService;
 import ru.itis.servletlessontwo.service.impl.CategoryServiceImpl;
@@ -44,11 +48,17 @@ public class MainContextListener implements ServletContextListener {
         CategoryMapper categoryMapper = new CategoryMapperImpl();
         context.setAttribute("categoryMapper", categoryMapper);
 
+        UserMapper userMapper = new UserMapperImpl();
+        context.setAttribute("userMapper", userMapper);
+
         CategoryRepository categoryRepository = new CategoryRepositoryImpl(jdbcTemplate, categoryMapper);
         context.setAttribute("categoryRepository", categoryRepository);
 
         ProductRepository productRepository = new ProductRepositoryImpl(jdbcTemplate, categoryRepository, productMapper);
         context.setAttribute("productRepository", productRepository);
+
+        UserRepository userRepository = new UserRepositoryImpl(jdbcTemplate, userMapper);
+        context.setAttribute("userRepository", userRepository);
 
         CategoryService categoryService = new CategoryServiceImpl(categoryRepository, categoryMapper);
         context.setAttribute("categoryService", categoryService);
