@@ -12,7 +12,7 @@ import ru.itis.servletlessontwo.service.UserService;
 
 import java.io.IOException;
 
-import static ru.itis.servletlessontwo.model.UserEntity.USER_ROLE
+import static ru.itis.servletlessontwo.model.UserEntity.USER_ROLE;
 
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
