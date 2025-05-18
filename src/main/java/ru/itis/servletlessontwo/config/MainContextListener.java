@@ -28,6 +28,7 @@ import ru.itis.servletlessontwo.service.impl.UserServiceImpl;
 import ru.itis.servletlessontwo.utils.PropertyReader;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Slf4j
 @WebListener
@@ -70,6 +71,30 @@ public class MainContextListener implements ServletContextListener {
 
         UserService userService = new UserServiceImpl(userRepository, userMapper);
         context.setAttribute("userService", userService);
+
+        List<String> PROTECTED_URIS = List.of(PropertyReader.getProperty("PROTECTED_URIS").split(","));
+        context.setAttribute("PROTECTED_URIS", PROTECTED_URIS);
+        List<String> PROTECTED_ADMIN_URIS = List.of(PropertyReader.getProperty("PROTECTED_ADMIN_URIS").split(","));
+        context.setAttribute("PROTECTED_ADMIN_URIS", PROTECTED_ADMIN_URIS);
+        List<String> NOTAUTH_URIS = List.of(PropertyReader.getProperty("NOTAUTH_URIS").split(","));
+        context.setAttribute("NOTAUTH_URIS", NOTAUTH_URIS);
+
+
+        String PROTECTED_REDIRECT = PropertyReader.getProperty("PROTECTED_REDIRECT");
+        context.setAttribute("PROTECTED_REDIRECT", PROTECTED_REDIRECT);
+        String PROTECTED_ADMIN_REDIRECT = PropertyReader.getProperty("PROTECTED_ADMIN_REDIRECT");
+        context.setAttribute("PROTECTED_ADMIN_REDIRECT", PROTECTED_ADMIN_REDIRECT);
+        String NOTAUTH_REDIRECT = PropertyReader.getProperty("NOTAUTH_REDIRECT");
+        context.setAttribute("NOTAUTH_REDIRECT", NOTAUTH_REDIRECT);
+
+        String AUTHORIZATION = PropertyReader.getProperty("AUTHORIZATION");
+        context.setAttribute("AUTHORIZATION", AUTHORIZATION);
+
+        String IS_ADMIN = PropertyReader.getProperty("IS_ADMIN");
+        context.setAttribute("IS_ADMIN", IS_ADMIN);
+
+        String SECRET_KEY = PropertyReader.getProperty("SECRET_KEY");
+        context.setAttribute("SECRET_KEY", SECRET_KEY);
 
     }
 
