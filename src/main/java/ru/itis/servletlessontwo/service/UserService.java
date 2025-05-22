@@ -9,4 +9,6 @@ public interface UserService {
     AuthResponse signUp(SignUpRequest request);
 
     AuthResponse signIn(SignInRequest request);
+
+    AuthResponse checkAdmin(SignInRequest request);
 }
