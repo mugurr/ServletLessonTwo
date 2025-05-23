@@ -14,6 +14,8 @@ import ru.itis.servletlessontwo.utils.AuthUtils;
 
 import java.util.Optional;
 
+import static ru.itis.servletlessontwo.model.UserEntity.ADMIN_ROLE;
+
 @Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -84,5 +86,14 @@ public class UserServiceImpl implements UserService {
                 .statusDesc(statusDesc)
                 .user(user)
                 .build();
+    }
+
+    @Override
+    public AuthResponse checkAdmin(UserDataResponse user) {
+        if (user.getRole().equals(ADMIN_ROLE)) {
+            return response(0, "OK", user);
+        } else {
+            return response(10, "You are not admin :(", null);
+        }
     }
 }

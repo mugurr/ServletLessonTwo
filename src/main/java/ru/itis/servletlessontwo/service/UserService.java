@@ -10,5 +10,5 @@ public interface UserService {
 
     AuthResponse signIn(SignInRequest request);
 
-    AuthResponse checkAdmin(SignInRequest request);
+    AuthResponse checkAdmin(UserDataResponse user);
 }
