@@ -5,6 +5,7 @@ import ru.itis.servletlessontwo.dto.response.ListProductsResponse;
 import ru.itis.servletlessontwo.dto.response.ProductResponse;
 import ru.itis.servletlessontwo.mapper.ProductMapper;
 import ru.itis.servletlessontwo.model.ProductEntity;
+import ru.itis.servletlessontwo.utils.ImageUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +34,7 @@ public class ProductMapperImpl implements ProductMapper {
                         .price(product.getPrice())
                         .quantity(product.getQuantity())
                         .category(product.getCategories())
-//                        .image(ImageUtils.encodeToBase64(product.getImage()))
+                        .image(ImageUtils.encodeToBase64(product.getImage()))
                         .build())
                 .collect(Collectors.toList());
 

@@ -87,7 +87,8 @@ public class AdminProductsServlet extends HttpServlet {
                             if (inputStream != null) {
                                 image = IOUtils.toByteArray(inputStream);
                             } else {
-                                image = new byte[]{1};
+//                                image = new byte[]{1};
+                                image = null;
                             }
 
                         }
