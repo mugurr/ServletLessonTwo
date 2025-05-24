@@ -19,6 +19,7 @@ import ru.itis.servletlessontwo.service.ProductService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,9 +105,16 @@ public class AdminProductsServlet extends HttpServlet {
                     .image(image)
                     .build();
 
-            productService.saveNewProduct(newProductRequest, categories);
+//            productService.saveNewProduct(newProductRequest, categories);
+//
+//            resp.sendRedirect("/admin/products");
 
-            resp.sendRedirect("/admin/products");
+            System.out.println("Image object type: " + (image != null ? image.getClass() : "null"));
+            if (image != null && image.getClass().isArray()) {
+                System.out.println("Image array length: " + Array.getLength(image));
+            }
+            req.getRequestDispatcher("/jsp/debug.jsp").forward(req, resp);
+
         } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Error processing upload: " + e.getMessage());
