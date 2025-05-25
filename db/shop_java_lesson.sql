@@ -46,3 +46,12 @@ CREATE TABLE product_category
 );
 
 SELECT c.id, c.name FROM category c join product_category pc on c.id = pc.category_id WHERE pc.product_id = ?;
+
+CREATE TABLE favorites
+(
+    id         SERIAL PRIMARY KEY,
+    user_id    INT NOT NULL,
+    product_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
+);
