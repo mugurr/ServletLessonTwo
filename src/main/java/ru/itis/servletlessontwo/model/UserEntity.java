@@ -20,5 +20,4 @@ public class UserEntity {
     private String hashPassword;
 
     private String role;
-
 }
