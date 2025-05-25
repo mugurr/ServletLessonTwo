@@ -105,15 +105,15 @@ public class AdminProductsServlet extends HttpServlet {
                     .image(image)
                     .build();
 
-//            productService.saveNewProduct(newProductRequest, categories);
-//
-//            resp.sendRedirect("/admin/products");
+            productService.saveNewProduct(newProductRequest, categories);
 
-            System.out.println("Image object type: " + (image != null ? image.getClass() : "null"));
-            if (image != null && image.getClass().isArray()) {
-                System.out.println("Image array length: " + Array.getLength(image));
-            }
-            req.getRequestDispatcher("/jsp/debug.jsp").forward(req, resp);
+            resp.sendRedirect("/admin/products");
+
+//            System.out.println("Image object type: " + (image != null ? image.getClass() : "null"));
+//            if (image != null && image.getClass().isArray()) {
+//                System.out.println("Image array length: " + Array.getLength(image));
+//            }
+//            req.getRequestDispatcher("/jsp/debug.jsp").forward(req, resp);
 
         } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,

@@ -3,7 +3,6 @@ package ru.itis.servletlessontwo.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.itis.servletlessontwo.dto.response.ListCategoriesResponse;
-import ru.itis.servletlessontwo.dto.response.ListProductsResponse;
 import ru.itis.servletlessontwo.mapper.CategoryMapper;
 import ru.itis.servletlessontwo.model.CategoryEntity;
 import ru.itis.servletlessontwo.repository.CategoryRepository;

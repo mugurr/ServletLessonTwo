@@ -13,7 +13,6 @@ import ru.itis.servletlessontwo.repository.CategoryRepository;
 import ru.itis.servletlessontwo.repository.ProductRepository;
 
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,7 +26,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private static final String SQL_SELECT_ALL_PRODUCTS = "select * from products";
 
-    private static final String SQL_INSERT_PRODUCT = "insert into products (name, description, price, image) values (?, ?, ?, ?)";
+    private static final String SQL_INSERT_PRODUCT = "insert into products (name, description, price, quantity, image) values (?, ?, ?, ?, ?)";
 
     private final CategoryRepository categoryRepository;
 
@@ -64,12 +63,12 @@ public class ProductRepositoryImpl implements ProductRepository {
         try {
             KeyHolder holder = new GeneratedKeyHolder();
             jdbcTemplate.update(con -> {
-                PreparedStatement ps = con.prepareStatement(SQL_INSERT_PRODUCT, new String[]{"id"});
+                PreparedStatement ps = con.prepareStatement(SQL_INSERT_PRODUCT, new String[] {"id"});
                 ps.setString(1, product.getName());
                 ps.setString(2, product.getDescription());
                 ps.setDouble(3, product.getPrice());
                 ps.setInt(4,product.getQuantity());
-                ps.setBytes(4, product.getImage());
+                ps.setBytes(5, product.getImage());
                 return ps;
             }, holder);
             Long id = Objects.requireNonNull(holder.getKey()).longValue();

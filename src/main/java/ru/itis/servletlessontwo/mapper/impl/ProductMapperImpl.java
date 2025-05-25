@@ -31,10 +31,10 @@ public class ProductMapperImpl implements ProductMapper {
                         .id(product.getId())
                         .name(product.getName())
                         .description(product.getDescription())
-                        .price(product.getPrice())
+                        .image(ImageUtils.encodeToBase64(product.getImage()))
                         .quantity(product.getQuantity())
                         .category(product.getCategories())
-                        .image(ImageUtils.encodeToBase64(product.getImage()))
+                        .price(product.getPrice())
                         .build())
                 .collect(Collectors.toList());
 
