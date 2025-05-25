@@ -207,7 +207,7 @@
 
         <!-- Кнопка "Избранное" справа -->
         <div class="right-buttons">
-            <button onclick="location.href='/favourites'">Избранное</button>
+            <button onclick="location.href='/favorites'">Избранное</button>
         </div>
     </div>
 

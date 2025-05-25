@@ -41,7 +41,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         for (ProductEntity product : products) {
             product.setCategories(categoryRepository.findCategoriesByProductId(product.getId()));
-            product.setFavorite(favoritesRepository.isProductInFavourites(userId, product.getId()));
+            product.setFavorite(favoritesRepository.isProductInFavorites(userId, product.getId()));
         }
 
         return products;

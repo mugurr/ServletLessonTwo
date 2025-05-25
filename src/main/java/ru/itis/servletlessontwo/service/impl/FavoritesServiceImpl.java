@@ -22,7 +22,7 @@ public class FavoritesServiceImpl implements FavoritesService {
 
     @Override
     public ListProductsResponse getAllFavorites(Long userId) {
-        List<ProductEntity> products = favoritesRepository.getFavouritesByUser(userId);
+        List<ProductEntity> products = favoritesRepository.getFavoritesByUser(userId);
         if (products.isEmpty()) {
             return new ListProductsResponse(Collections.emptyList());
         }
@@ -31,11 +31,11 @@ public class FavoritesServiceImpl implements FavoritesService {
 
     @Override
     public void deleteFavorite(Long userId, Long productId) {
-        favoritesRepository.removeFromFavourites(userId, productId)
+        favoritesRepository.removeFromFavorites(userId, productId);
     }
 
     @Override
     public void addFavorite(Long userId, Long productId) {
-        favoritesRepository.addToFavourites(userId, productId);
+        favoritesRepository.addToFavorites(userId, productId);
     }
 }

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface FavoritesRepository {
 
-    void addToFavourites(Long userId, Long productId);
+    void addToFavorites(Long userId, Long productId);
 
-    void removeFromFavourites(Long userId, Long productId);
+    void removeFromFavorites(Long userId, Long productId);
 
-    List<ProductEntity> getFavouritesByUser(Long userId);
+    List<ProductEntity> getFavoritesByUser(Long userId);
 
-    boolean isProductInFavourites(Long userId, Long productId);
+    boolean isProductInFavorites(Long userId, Long productId);
 }
