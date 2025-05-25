@@ -23,9 +23,9 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
 
     @Override
-    public ListProductsResponse getAllProducts() {
+    public ListProductsResponse getAllProducts(Long userId) {
 
-        List<ProductEntity> products = productRepository.getAllProducts();
+        List<ProductEntity> products = productRepository.getAllProducts(userId);
         log.info("Get all products");
 
         if (products.isEmpty()) {

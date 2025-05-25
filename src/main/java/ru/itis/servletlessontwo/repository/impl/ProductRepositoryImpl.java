@@ -10,6 +10,7 @@ import ru.itis.servletlessontwo.mapper.ProductMapper;
 import ru.itis.servletlessontwo.mapper.impl.ProductMapperImpl;
 import ru.itis.servletlessontwo.model.ProductEntity;
 import ru.itis.servletlessontwo.repository.CategoryRepository;
+import ru.itis.servletlessontwo.repository.FavoritesRepository;
 import ru.itis.servletlessontwo.repository.ProductRepository;
 
 import java.sql.PreparedStatement;
@@ -32,12 +33,15 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private final ProductMapper productMapper;
 
+    private final FavoritesRepository favoritesRepository;
+
     @Override
-    public List<ProductEntity> getAllProducts() {
+    public List<ProductEntity> getAllProducts(Long userId) {
         List<ProductEntity> products = jdbcTemplate.query(SQL_SELECT_ALL_PRODUCTS, productMapper);
 
         for (ProductEntity product : products) {
             product.setCategories(categoryRepository.findCategoriesByProductId(product.getId()));
+            product.setFavorite(favoritesRepository.isProductInFavourites(userId, product.getId()));
         }
 
         return products;

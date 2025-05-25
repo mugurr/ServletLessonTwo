@@ -42,8 +42,8 @@ public class AdminProductsServlet extends HttpServlet {
 
         UserDataResponse user = (UserDataResponse) session.getAttribute("user");
 
-//        ListProductsResponse listProductsResponse = productService.getAllProducts(user.getId());
-        ListProductsResponse listProductsResponse = productService.getAllProducts();
+        ListProductsResponse listProductsResponse = productService.getAllProducts(user.getId());
+//        ListProductsResponse listProductsResponse = productService.getAllProducts();
 
         session.setAttribute("products", listProductsResponse);
 

@@ -24,4 +24,6 @@ public class ProductResponse {
     private String image;
 
     private List<CategoryEntity> category;
+
+    private Boolean isFavorite;
 }
