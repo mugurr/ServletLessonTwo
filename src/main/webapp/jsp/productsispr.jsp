@@ -240,6 +240,7 @@
                     <h4 style="display: none;">Описание: ${product.description}</h4>
                     <div class="buttons">
                         <button onclick="showDetails(this)">Подробнее</button>
+                        <button onclick="showDetails(this)">Подробнее</button>
                     </div>
                 </div>
             </c:forEach>

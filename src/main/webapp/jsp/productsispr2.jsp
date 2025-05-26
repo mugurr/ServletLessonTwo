@@ -1,763 +1,403 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
-  <title>Каталог товаров</title>
-  <style>
-    body {
-      background-image: url('../image/background.jpg'); /* Путь к фоновому изображению */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      color: #333; /* Основной цвет текста */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог товаров</title>
+    <style>
+        /* Стили остаются без изменений */
+        body {
+            background-image: url('../image/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #333;
+        }
 
-    .container {
-      background-color: rgba(255, 255, 255, 0.95); /* Полупрозрачный белый фон */
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      width: 1200px;
-      height: 650px; /* Фиксированные размеры контейнера */
-      display: flex;
-      flex-direction: column;
-      position: relative; /* Для позиционирования кнопок */
-    }
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 1200px;
+            height: 650px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px; /* Отступ между заголовком и фильтром */
-      display: flex;
-      justify-content: space-between; /* Распределяем кнопки по краям */
-      align-items: center;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .header .left-buttons,
-    .header .right-buttons {
-      display: flex;
-      gap: 10px;
-    }
+        .header .left-buttons,
+        .header .right-buttons {
+            display: flex;
+            gap: 10px;
+        }
 
-    .header button {
-      background-color: #2196F3; /* Синий цвет для кнопок */
-      color: white;
-      border: none;
-      padding: 10px 20px; /* Увеличенный размер */
-      border-radius: 5px;
-      font-size: 1rem; /* Увеличенный размер текста */
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+        .header button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-    .header button:hover {
-      background-color: #1976D2; /* Темно-синий цвет при наведении */
-    }
+        .header button:hover {
+            background-color: #1976D2;
+        }
 
-    .content {
-      display: flex;
-      flex: 1;
-    }
+        .content {
+            display: flex;
+            flex: 1;
+        }
 
-    .filter-section {
-      flex: 1; /* Левая часть: чекбоксы */
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding-right: 20px;
-      border-right: 1px solid #ddd; /* Разделитель между левой и правой частью */
-    }
+        .filter-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-right: 20px;
+            border-right: 1px solid #ddd;
+        }
 
-    .filter-section label {
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
+        .filter-section label {
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
 
-    .products-section {
-      flex: 3; /* Правая часть: список продуктов */
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      overflow-y: auto; /* Прокрутка для продуктов */
-      padding: 20px;
-    }
+        .products-section {
+            flex: 3;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            overflow-y: auto;
+            padding: 10px;
+        }
 
-    .product-item {
-      flex: 0 0 calc(33.33% - 20px); /* Три товара в ряд */
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      box-sizing: border-box;
-      height: calc(50% - 20px); /* 50% контейнера в высоту */
-      justify-content: space-between; /* Распределяем содержимое по высоте */
-    }
+        .product-item {
+            flex: 0 0 calc(33.33% - 20px);
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+            height: calc(50% - 20px);
+            justify-content: space-between;
+        }
 
-    .product-item img {
-      max-width: 80px;
-      max-height: 80px;
-      margin-bottom: 10px;
-    }
+        .product-item img {
+            max-width: 80px;
+            max-height: 80px;
+            margin-bottom: 10px;
+        }
 
-    .product-item h3 {
-      font-size: 1rem;
-      color: #333;
-      margin-bottom: 10px;
-    }
+        .product-item h3 {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
 
-    .product-item p {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 10px;
-    }
+        .product-item p {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
 
-    .product-item .buttons button {
-      display: flex;
-      gap: 10px;
-      margin-top: auto; /* Кнопки всегда внизу ячейки */
-    }
+        .product-item .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
 
-    .product-item .buttons button {
-      background-color: #4CAF50; /* Зеленый цвет для кнопок */
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
-    }
+        .product-item .buttons button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-    .product-item .buttons button:hover {
-      background-color: #45a049; /* Темно-зеленый цвет при наведении */
-    }
+        .product-item .buttons button:hover {
+            background-color: #45a049;
+        }
 
-    .product-item .buttons button.remove {
-      background-color: #f44336; /* Красный цвет для удаления */
-    }
+        .product-item .buttons button.remove {
+            background-color: #f44336;
+        }
 
-    .product-item .buttons button.remove:hover {
-      background-color: #d32f2f; /* Темно-красный цвет при наведении */
-    }
+        .product-item .buttons button.remove:hover {
+            background-color: #d32f2f;
+        }
 
-    /* Модальное окно */
-    .modal {
-      display: none; /* Скрыто по умолчанию */
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
-    }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
 
-    .modal-content {
-      background-color: white;
-      margin: 15% auto; /* Центрирование по вертикали */
-      padding: 20px;
-      border: 1px solid #888;
-      width: 50%; /* Ширина модального окна */
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      position: relative;
-    }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
 
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 224px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-    .close:hover {
-      color: #555;
-    }
-  </style>
+        .close:hover {
+            color: #555;
+        }
+
+        /* Новые стили для кнопки избранного в модальном окне */
+        .modal-favorite-btn {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-favorite-btn.added {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-  <!-- Заголовок "Каталог товаров" -->
-  <div class="header">
-    <!-- Кнопка "На главную" слева -->
-    <div class="left-buttons">
-      <button onclick="location.href='/main'">На главную</button>
-    </div>
-
-    <!-- Заголовок -->
-    <h1>Каталог товаров</h1>
-
-    <!-- Кнопка "Избранное" справа -->
-    <div class="right-buttons">
-      <button onclick="location.href='/favorites'">Избранное</button>
-    </div>
-  </div>
-
-  <!-- Основной контент -->
-  <div class="content">
-    <!-- Левая часть: Фильтр -->
-    <div class="filter-section">
-      <label>
-        <input type="checkbox" class="category-filter" value="all" checked> Все категории
-      </label><br/>
-      <c:forEach var="category" items="${sessionScope.categories.categories}">
-        <label>
-          <input type="checkbox" value="${category.name}" class="category-filter"> ${category.name}
-        </label><br/>
-      </c:forEach>
-    </div>
-
-    <!-- Правая часть: Список продуктов -->
-    <div class="products-section">
-      <c:forEach var="product" items="${sessionScope.products.products}">
-        <c:set var="categoryNames" value="" />
-        <c:forEach var="category" items="${product.category}">
-          <c:set var="categoryNames" value="${categoryNames} ${category.name}" />
-        </c:forEach>
-
-        <div class="product-item" data-categories="${categoryNames.trim()}">
-          <img src="data:image/jpeg;base64,${product.image}" alt="${product.name}">
-          <h3>${product.name}</h3>
-          <p>Цена: $${product.price}</p>
-          <h4 style="display: none;">Описание: ${product.description}</h4>
-          <div class="buttons">
-            <button onclick="showDetails(this)">Подробнее</button>
-            <form method="post" action="toggleProduct" style="display: inline;">
-              <input type="hidden" name="productId" value="${product.id}">
-              <input type="hidden" name="isFavorite" id="isFavorite_${product.id}" value="${product.favorite}">
-              <button type="submit" data-favorite="${product.favorite}">
-                <c:choose>
-                  <c:when test="${product.favorite}">
-                    Удалить из избранного
-                  </c:when>
-                  <c:otherwise>
-                    Добавить в избранное
-                  </c:otherwise>
-                </c:choose>
-              </button>
-            </form>
-
-          </div>
+    <div class="header">
+        <div class="left-buttons">
+            <button onclick="location.href='/main'">На главную</button>
         </div>
-      </c:forEach>
+        <h1>Каталог товаров</h1>
+        <div class="right-buttons">
+            <button onclick="location.href='/favorites'">Избранное</button>
+        </div>
     </div>
-  </div>
+
+    <div class="content">
+        <div class="filter-section">
+            <label>
+                <input type="checkbox" class="category-filter" value="all" checked> Все категории
+            </label><br/>
+            <c:forEach var="category" items="${sessionScope.categories.categories}">
+                <label>
+                    <input type="checkbox" value="${category.name}" class="category-filter"> ${category.name}
+                </label><br/>
+            </c:forEach>
+        </div>
+
+        <div class="products-section">
+            <c:forEach var="product" items="${sessionScope.products.products}">
+                <c:set var="categoryNames" value="" />
+                <c:forEach var="category" items="${product.category}">
+                    <c:set var="categoryNames" value="${categoryNames} ${category.name}" />
+                </c:forEach>
+
+                <div class="product-item" data-categories="${categoryNames.trim()}" data-product-id="${product.id}">
+                    <img src="data:image/jpeg;base64,${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>Цена: $${product.price}</p>
+                    <h4 style="display:none;">Описание: ${product.description}</h4>
+                    <div class="buttons">
+                        <button onclick="showDetails(this)">Подробнее</button>
+                        <button class="favorite-btn ${product.favorite ? 'remove' : ''}"
+                                onclick="toggleFavorite(event, ${product.id}, ${product.favorite})">
+                                ${product.favorite ? 'Удалить из избранного' : 'Добавить в избранное'}
+                        </button>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
 </div>
 
-<!-- Модальное окно -->
+<!-- Модальное окно с кнопкой избранного -->
 <div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h3 id="modal-title"></h3>
-    <p id="modal-description"></p>
-  </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3 id="modal-title"></h3>
+        <p id="modal-description"></p>
+        <button id="modal-favorite-btn" class="modal-favorite-btn" onclick="toggleFavoriteModal()"></button>
+    </div>
 </div>
 
 <script>
-  // Функция для отображения модального окна
-  function showDetails(button) {
-    const productItem = button.parentElement.parentElement;
-    const title = productItem.querySelector('h3').innerText;
-    const description = productItem.querySelector('h4').innerText;
-    const price = productItem.querySelector('p').innerText;
+    // Глобальные переменные для хранения текущего товара в модальном окне
+    let currentProductId = null;
+    let currentFavoriteStatus = false;
 
-    document.getElementById('modal-title').innerText = title;
-    document.getElementById('modal-description').innerText = price + "\n" + description;
-    document.getElementById('modal').style.display = 'block';
-  }
+    // Функция для отображения модального окна
+    function showDetails(button) {
+        const productItem = button.parentElement.parentElement;
+        const title = productItem.querySelector('h3').innerText;
+        const description = productItem.querySelector('h4').innerText;
+        const price = productItem.querySelector('p').innerText;
 
-  // Функция для закрытия модального окна
-  function closeModal() {
-    document.getElementById('modal').style.display = 'none';
-  }
+        // Сохраняем ID товара и статус избранного
+        currentProductId = productItem.dataset.productId;
+        const favoriteBtn = productItem.querySelector('.favorite-btn');
+        currentFavoriteStatus = favoriteBtn.classList.contains('remove');
 
-  // Фильтр по категориям
-  document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('.category-filter');
+        // Заполняем модальное окно данными
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-description').innerText = price + "\n" + description;
 
-    // Обработчик изменения состояния чекбоксов
-    checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', function() {
-        filterProducts();
-      });
-    });
+        // Обновляем кнопку в модальном окне
+        const modalFavoriteBtn = document.getElementById('modal-favorite-btn');
+        modalFavoriteBtn.innerText = currentFavoriteStatus ? 'Удалить из избранного' : 'Добавить в избранное';
+        modalFavoriteBtn.className = currentFavoriteStatus ? 'modal-favorite-btn added' : 'modal-favorite-btn';
 
-    // Первоначальная фильтрация
-    filterProducts();
-  });
-
-  function filterProducts() {
-    const allCheckbox = document.querySelector('.category-filter[value="all"]');
-    const categoryCheckboxes = document.querySelectorAll('.category-filter:not([value="all"])');
-    const products = document.querySelectorAll('.product-item');
-
-    // Если выбран "Все категории", снимаем выбор с остальных
-    if (allCheckbox.checked) {
-      categoryCheckboxes.forEach(cb => cb.checked = false);
-    } else {
-      allCheckbox.checked = false;
+        // Показываем модальное окно
+        document.getElementById('modal').style.display = 'block';
     }
 
-    // Получаем выбранные категории
-    const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
-
-    // Если ничего не выбрано или выбрано "Все категории", показываем все товары
-    if (selectedCategories.length === 0 || selectedCategories.includes('all')) {
-      products.forEach(product => {
-        product.style.display = 'flex';
-      });
-      return;
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
     }
 
-    // Фильтрация товаров
-    products.forEach(product => {
-      const productCategories = product.dataset.categories.split(' ');
-      const isVisible = selectedCategories.some(category => productCategories.includes(category));
-      product.style.display = isVisible ? 'flex' : 'none';
-    });
-  }
-</script>
+    // Функция для переключения избранного из списка товаров
+    async function toggleFavorite(event, productId, isFavorite) {
+        event.preventDefault();
+        event.stopPropagation();
 
-</body>
-</html>
-Вот модифицированный код, который позволяет добавлять/удалять товары из избранного прямо в модальном окне:
+        const button = event.target;
+        button.disabled = true;
 
-jsp
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
-  <title>Каталог товаров</title>
-  <style>
-    body {
-      background-image: url('../image/background.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      color: #333;
+        try {
+            const response = await fetch('/toggleProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `productId=${productId}&isFavorite=${!isFavorite}`
+            });
+
+            if (!response.ok) throw new Error('Server error');
+
+            button.classList.toggle('remove');
+            button.innerText = button.classList.contains('remove')
+                ? 'Удалить из избранного'
+                : 'Добавить в избранное';
+
+            if (currentProductId == productId) {
+                currentFavoriteStatus = !isFavorite;
+                updateModalFavoriteButton();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Не удалось обновить избранное');
+        } finally {
+            button.disabled = false;
+        }
     }
 
-    .container {
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      width: 1200px;
-      height: 650px;
-      display: flex;
-      flex-direction: column;
-      position: relative;
+    function updateModalFavoriteButton() {
+        const modalFavoriteBtn = document.getElementById('modal-favorite-btn');
+        modalFavoriteBtn.innerText = currentFavoriteStatus
+            ? 'Удалить из избранного'
+            : 'Добавить в избранное';
+        modalFavoriteBtn.className = currentFavoriteStatus
+            ? 'modal-favorite-btn added'
+            : 'modal-favorite-btn';
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    // Функция для переключения избранного из модального окна
+    function toggleFavoriteModal() {
+        const newStatus = !currentFavoriteStatus;
 
-    .header .left-buttons,
-    .header .right-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .header button {
-      background-color: #2196F3;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .header button:hover {
-      background-color: #1976D2;
-    }
-
-    .content {
-      display: flex;
-      flex: 1;
-    }
-
-    .filter-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding-right: 20px;
-      border-right: 1px solid #ddd;
-    }
-
-    .filter-section label {
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-
-    .products-section {
-      flex: 3;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .product-item {
-      flex: 0 0 calc(33.33% - 20px);
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      box-sizing: border-box;
-      height: calc(50% - 20px);
-      justify-content: space-between;
-    }
-
-    .product-item img {
-      max-width: 80px;
-      max-height: 80px;
-      margin-bottom: 10px;
-    }
-
-    .product-item h3 {
-      font-size: 1rem;
-      color: #333;
-      margin-bottom: 10px;
-    }
-
-    .product-item p {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 10px;
-    }
-
-    .product-item .buttons button {
-      display: flex;
-      gap: 10px;
-      margin-top: auto;
-    }
-
-    .product-item .buttons button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .product-item .buttons button:hover {
-      background-color: #45a049;
-    }
-
-    .product-item .buttons button.remove {
-      background-color: #f44336;
-    }
-
-    .product-item .buttons button.remove:hover {
-      background-color: #d32f2f;
-    }
-
-    /* Модальное окно */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-content {
-      background-color: white;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 50%;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      position: relative;
-    }
-
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: #555;
-    }
-
-    .modal-buttons {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .modal-buttons button {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .favorite-btn {
-      background-color: #ffc107;
-      color: #333;
-    }
-
-    .favorite-btn:hover {
-      background-color: #e0a800;
-    }
-
-    .favorite-btn.added {
-      background-color: #f44336;
-      color: white;
-    }
-
-    .favorite-btn.added:hover {
-      background-color: #d32f2f;
-    }
-  </style>
-</head>
-<body>
-
-<div class="container">
-  <div class="header">
-    <div class="left-buttons">
-      <button onclick="location.href='/main'">На главную</button>
-    </div>
-    <h1>Каталог товаров</h1>
-    <div class="right-buttons">
-      <button onclick="location.href='/favorites'">Избранное</button>
-    </div>
-  </div>
-
-  <div class="content">
-    <div class="filter-section">
-      <label>
-        <input type="checkbox" class="category-filter" value="all" checked> Все категории
-      </label><br/>
-      <c:forEach var="category" items="${sessionScope.categories.categories}">
-        <label>
-          <input type="checkbox" value="${category.name}" class="category-filter"> ${category.name}
-        </label><br/>
-      </c:forEach>
-    </div>
-
-    <div class="products-section">
-      <c:forEach var="product" items="${sessionScope.products.products}">
-        <c:set var="categoryNames" value="" />
-        <c:forEach var="category" items="${product.category}">
-          <c:set var="categoryNames" value="${categoryNames} ${category.name}" />
-        </c:forEach>
-
-        <div class="product-item" data-categories="${categoryNames.trim()}" data-product-id="${product.id}">
-          <img src="data:image/jpeg;base64,${product.image}" alt="${product.name}">
-          <h3>${product.name}</h3>
-          <p>Цена: $${product.price}</p>
-          <h4 style="display: none;">Описание: ${product.description}</h4>
-          <div class="buttons">
-            <button onclick="showDetails(this)">Подробнее</button>
-            <button class="favorite-btn ${product.favorite ? 'added' : ''}"
-                    onclick="toggleFavorite(this, ${product.id}, ${product.favorite})">
-                ${product.favorite ? 'Удалить из избранного' : 'Добавить в избранное'}
-            </button>
-          </div>
-        </div>
-      </c:forEach>
-    </div>
-  </div>
-</div>
-
-<!-- Модальное окно -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h3 id="modal-title"></h3>
-    <p id="modal-description"></p>
-    <div class="modal-buttons">
-      <button id="modal-favorite-btn" class="favorite-btn" onclick="toggleFavoriteModal()"></button>
-    </div>
-  </div>
-</div>
-
-<script>
-  let currentProductId = null;
-  let currentFavoriteStatus = false;
-
-  function showDetails(button) {
-    const productItem = button.parentElement.parentElement;
-    const title = productItem.querySelector('h3').innerText;
-    const description = productItem.querySelector('h4').innerText;
-    const price = productItem.querySelector('p').innerText;
-    currentProductId = productItem.dataset.productId;
-
-    // Находим кнопку избранного для этого товара
-    const favoriteBtn = productItem.querySelector('.favorite-btn');
-    currentFavoriteStatus = favoriteBtn.classList.contains('added');
-
-    document.getElementById('modal-title').innerText = title;
-    document.getElementById('modal-description').innerText = price + "\n" + description;
-
-    // Обновляем кнопку в модальном окне
-    const modalFavoriteBtn = document.getElementById('modal-favorite-btn');
-    modalFavoriteBtn.innerText = currentFavoriteStatus ? 'Удалить из избранного' : 'Добавить в избранное';
-    modalFavoriteBtn.className = currentFavoriteStatus ? 'favorite-btn added' : 'favorite-btn';
-
-    document.getElementById('modal').style.display = 'block';
-  }
-
-  function closeModal() {
-    document.getElementById('modal').style.display = 'none';
-  }
-
-  function toggleFavorite(button, productId, isFavorite) {
-    fetch('/toggleFavorite', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `productId=${productId}&isFavorite=${!isFavorite}`
-    })
+        fetch('/toggleProduct', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `productId=${currentProductId}&isFavorite=${newStatus}`
+        })
             .then(response => {
-              if (response.ok) {
-                // Обновляем состояние кнопки
-                button.classList.toggle('added');
-                button.innerText = button.classList.contains('added') ? 'Удалить из избранного' : 'Добавить в избранное';
+                if (response.ok) {
+                    // Обновляем состояние кнопки в модальном окне
+                    currentFavoriteStatus = newStatus;
+                    const modalFavoriteBtn = document.getElementById('modal-favorite-btn');
+                    modalFavoriteBtn.innerText = newStatus ? 'Удалить из избранного' : 'Добавить в избранное';
+                    modalFavoriteBtn.className = newStatus ? 'modal-favorite-btn added' : 'modal-favorite-btn';
 
-                // Если это текущий товар в модальном окне, обновляем и его кнопку
-                if (currentProductId == productId) {
-                  currentFavoriteStatus = !isFavorite;
-                  const modalFavoriteBtn = document.getElementById('modal-favorite-btn');
-                  modalFavoriteBtn.innerText = currentFavoriteStatus ? 'Удалить из избранного' : 'Добавить в избранное';
-                  modalFavoriteBtn.className = currentFavoriteStatus ? 'favorite-btn added' : 'favorite-btn';
+                    // Обновляем кнопку в основном списке
+                    const productItem = document.querySelector(`.product-item[data-product-id="${currentProductId}"]`);
+                    if (productItem) {
+                        const favoriteBtn = productItem.querySelector('.favorite-btn');
+                        favoriteBtn.innerText = newStatus ? 'Удалить из избранного' : 'Добавить в избранное';
+                        favoriteBtn.className = newStatus ? 'favorite-btn remove' : 'favorite-btn';
+                    }
                 }
-              }
             })
             .catch(error => console.error('Error:', error));
-
-    // Предотвращаем всплытие события, чтобы не открывалось модальное окно
-    event.stopPropagation();
-  }
-
-  function toggleFavoriteModal() {
-    const modalFavoriteBtn = document.getElementById('modal-favorite-btn');
-    const newStatus = !currentFavoriteStatus;
-
-    fetch('/toggleFavorite', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `productId=${currentProductId}&isFavorite=${newStatus}`
-    })
-            .then(response => {
-              if (response.ok) {
-                // Обновляем состояние кнопки в модальном окне
-                currentFavoriteStatus = newStatus;
-                modalFavoriteBtn.innerText = newStatus ? 'Удалить из избранного' : 'Добавить в избранное';
-                modalFavoriteBtn.className = newStatus ? 'favorite-btn added' : 'favorite-btn';
-
-                // Обновляем кнопку в основном списке
-                const productItem = document.querySelector(`.product-item[data-product-id="${currentProductId}"]`);
-                if (productItem) {
-                  const favoriteBtn = productItem.querySelector('.favorite-btn');
-                  favoriteBtn.innerText = newStatus ? 'Удалить из избранного' : 'Добавить в избранное';
-                  favoriteBtn.className = newStatus ? 'favorite-btn added' : 'favorite-btn';
-                }
-              }
-            })
-            .catch(error => console.error('Error:', error));
-  }
-
-  // Фильтр по категориям
-  document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('.category-filter');
-
-    checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', function() {
-        filterProducts();
-      });
-    });
-
-    filterProducts();
-  });
-
-  function filterProducts() {
-    const allCheckbox = document.querySelector('.category-filter[value="all"]');
-    const categoryCheckboxes = document.querySelectorAll('.category-filter:not([value="all"])');
-    const products = document.querySelectorAll('.product-item');
-
-    if (allCheckbox.checked) {
-      categoryCheckboxes.forEach(cb => cb.checked = false);
-    } else {
-      allCheckbox.checked = false;
     }
 
-    const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
+    // Фильтр по категориям
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.category-filter');
 
-    if (selectedCategories.length === 0 || selectedCategories.includes('all')) {
-      products.forEach(product => {
-        product.style.display = 'flex';
-      });
-      return;
-    }
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
+                const products = document.querySelectorAll('.product-item');
 
-    products.forEach(product => {
-      const productCategories = product.dataset.categories.split(' ');
-      const isVisible = selectedCategories.some(category => productCategories.includes(category));
-      product.style.display = isVisible ? 'flex' : 'none';
+                products.forEach(product => {
+                    const productCategories = product.dataset.categories.split(' ');
+                    const isVisible = selectedCategories.length === 0 ||
+                        selectedCategories.includes('all') ||
+                        selectedCategories.some(category => productCategories.includes(category));
+                    product.style.display = isVisible ? 'flex' : 'none';
+                });
+            });
+        });
     });
-  }
 </script>
 
 </body>

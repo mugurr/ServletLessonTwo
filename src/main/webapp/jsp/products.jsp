@@ -1,5 +1,5 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -247,9 +247,9 @@
                     <h4 style="display:none;">Описание: ${product.description}</h4>
                     <div class="buttons">
                         <button onclick="showDetails(this)">Подробнее</button>
-                        <button class="favorite-btn ${product.favorite ? 'remove' : ''}"
-                                onclick="toggleFavorite(event, ${product.id}, ${product.favorite})">
-                                ${product.favorite ? 'Удалить из избранного' : 'Добавить в избранное'}
+                        <button class="favorite-btn ${product.isFavorite ? 'remove' : ''}"
+                                onclick="toggleFavorite(event, ${product.id}, ${product.isFavorite})">
+                                ${product.isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
                         </button>
                     </div>
                 </div>
