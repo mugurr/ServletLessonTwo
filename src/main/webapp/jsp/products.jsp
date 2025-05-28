@@ -221,6 +221,7 @@
         </div>
     </div>
 
+    <!-- Основной контент -->
     <div class="content">
         <div class="filter-section">
             <label>
@@ -233,24 +234,37 @@
             </c:forEach>
         </div>
 
+
+        <!-- Правая часть: Список продуктов -->
         <div class="products-section">
             <c:forEach var="product" items="${sessionScope.products.products}">
+
                 <c:set var="categoryNames" value="" />
                 <c:forEach var="category" items="${product.category}">
                     <c:set var="categoryNames" value="${categoryNames} ${category.name}" />
                 </c:forEach>
 
-                <div class="product-item" data-categories="${categoryNames.trim()}" data-product-id="${product.id}">
+                <div class="product-item" data-categories="${categoryNames}">
                     <img src="data:image/jpeg;base64,${product.image}" alt="${product.name}">
                     <h3>${product.name}</h3>
                     <p>Цена: $${product.price}</p>
                     <h4 style="display:none;">Описание: ${product.description}</h4>
                     <div class="buttons">
                         <button onclick="showDetails(this)">Подробнее</button>
-                        <button class="favorite-btn ${product.isFavorite ? 'remove' : ''}"
-                                onclick="toggleFavorite(event, ${product.id}, ${product.isFavorite})">
-                                ${product.isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
-                        </button>
+                        <form method="post" action="toggleProduct" style="display:inline;">
+                            <input type="hidden" name="productId" value="${product.id}">
+                            <input type="hidden" name="isFavorite" id="isFavorite_${product.id}" value="${product.isFavorite}">
+                            <button type="submit" data-favorite="${product.isFavorite}">
+                                <c:choose>
+                                    <c:when test="${product.isFavorite}">
+                                        Удалить из избранного
+                                    </c:when>
+                                    <c:otherwise>
+                                        Добавить в избранное
+                                    </c:otherwise>
+                                </c:choose>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </c:forEach>
