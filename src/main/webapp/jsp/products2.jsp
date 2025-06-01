@@ -207,7 +207,7 @@
 
         <!-- Кнопка "Избранное" справа -->
         <div class="right-buttons">
-            <button onclick="location.href='/favourites'">Избранное</button>
+            <button onclick="location.href='/favorites'">Избранное</button>
         </div>
     </div>
 
@@ -240,10 +240,10 @@
                         <button onclick="showDetails(this)">Подробнее</button>
                         <form method="post" action="toggleProduct" style="display:inline;">
                             <input type="hidden" name="productId" value="${product.id}">
-                            <input type="hidden" name="isFavorite" id="isFavorite_${product.id}" value="${product.favorite}">
-                            <button type="submit" data-favorite="${product.favorite}">
+                            <input type="hidden" name="isFavorite" id="isFavorite_${product.id}" value="${product.isFavorite}">
+                            <button type="submit" data-favorite="${product.isFavorite}">
                                 <c:choose>
-                                    <c:when test="${product.favorite}">
+                                    <c:when test="${product.isFavorite}">
                                         Удалить из избранного
                                     </c:when>
                                     <c:otherwise>

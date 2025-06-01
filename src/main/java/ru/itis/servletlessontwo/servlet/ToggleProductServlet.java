@@ -20,7 +20,7 @@ public class ToggleProductServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         ServletContext context = getServletContext();
-        favoritesService = (FavoritesService) context.getAttribute("favouritesService");
+        favoritesService = (FavoritesService) context.getAttribute("favoritesService");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package ru.itis.servletlessontwo.service.impl;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.itis.servletlessontwo.dto.response.ListProductsResponse;
