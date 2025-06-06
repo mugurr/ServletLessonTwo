@@ -55,3 +55,12 @@ CREATE TABLE favorites
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
 );
+
+CREATE TABLE orders
+(
+    id          SERIAL PRIMARY KEY,
+    user_id     INT         NOT NULL REFERENCES users (id),
+    product_id  INT         NOT NULL REFERENCES products (id),
+    order_date  TIMESTAMP   NOT NULL,
+    status_code VARCHAR(50) NOT NULL
+);
