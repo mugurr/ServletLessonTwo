@@ -8,19 +8,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.itis.servletlessontwo.mapper.CategoryMapper;
+import ru.itis.servletlessontwo.mapper.OrderMapper;
 import ru.itis.servletlessontwo.mapper.ProductMapper;
 import ru.itis.servletlessontwo.mapper.UserMapper;
 import ru.itis.servletlessontwo.mapper.impl.CategoryMapperImpl;
+import ru.itis.servletlessontwo.mapper.impl.OrderMapperImpl;
 import ru.itis.servletlessontwo.mapper.impl.ProductMapperImpl;
 import ru.itis.servletlessontwo.mapper.impl.UserMapperImpl;
-import ru.itis.servletlessontwo.repository.CategoryRepository;
-import ru.itis.servletlessontwo.repository.FavoritesRepository;
-import ru.itis.servletlessontwo.repository.ProductRepository;
-import ru.itis.servletlessontwo.repository.UserRepository;
-import ru.itis.servletlessontwo.repository.impl.CategoryRepositoryImpl;
-import ru.itis.servletlessontwo.repository.impl.FavoritesRepositoryImpl;
-import ru.itis.servletlessontwo.repository.impl.ProductRepositoryImpl;
-import ru.itis.servletlessontwo.repository.impl.UserRepositoryImpl;
+import ru.itis.servletlessontwo.repository.*;
+import ru.itis.servletlessontwo.repository.impl.*;
 import ru.itis.servletlessontwo.service.CategoryService;
 import ru.itis.servletlessontwo.service.FavoritesService;
 import ru.itis.servletlessontwo.service.ProductService;
@@ -58,6 +54,9 @@ public class MainContextListener implements ServletContextListener {
         UserMapper userMapper = new UserMapperImpl();
         context.setAttribute("userMapper", userMapper);
 
+        OrderMapper orderMapper = new OrderMapperImpl();
+        context.setAttribute("orderMapper", orderMapper);
+
         CategoryRepository categoryRepository = new CategoryRepositoryImpl(jdbcTemplate, categoryMapper);
         context.setAttribute("categoryRepository", categoryRepository);
 
@@ -69,6 +68,9 @@ public class MainContextListener implements ServletContextListener {
 
         UserRepository userRepository = new UserRepositoryImpl(jdbcTemplate, userMapper);
         context.setAttribute("userRepository", userRepository);
+
+        OrdersRepository ordersRepository = new OrdersRepositoryImpl(jdbcTemplate, orderMapper);
+        context.setAttribute("ordersRepository", ordersRepository);
 
         CategoryService categoryService = new CategoryServiceImpl(categoryRepository, categoryMapper);
         context.setAttribute("categoryService", categoryService);
