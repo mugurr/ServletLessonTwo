@@ -294,10 +294,10 @@
         const description = productItem.querySelector('h4').innerText;
         const price = productItem.querySelector('p').innerText;
 
-        // Сохраняем ID товара и статус избранного
-        currentProductId = productItem.dataset.productId;
-        const favoriteBtn = productItem.querySelector('.favorite-btn');
-        currentFavoriteStatus = favoriteBtn.classList.contains('remove');
+        // // Сохраняем ID товара и статус избранного
+        // currentProductId = productItem.dataset.productId;
+        // const favoriteBtn = productItem.querySelector('.favorite-btn');
+        // currentFavoriteStatus = favoriteBtn.classList.contains('remove');
 
         // Заполняем модальное окно данными
         document.getElementById('modal-title').innerText = title;
