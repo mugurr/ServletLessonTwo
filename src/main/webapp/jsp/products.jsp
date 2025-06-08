@@ -304,9 +304,9 @@
         document.getElementById('modal-description').innerText = price + "\n" + description;
 
         // Обновляем кнопку в модальном окне
-        const modalFavoriteBtn = document.getElementById('modal-favorite-btn');
-        modalFavoriteBtn.innerText = currentFavoriteStatus ? 'Удалить из избранного' : 'Добавить в избранное';
-        modalFavoriteBtn.className = currentFavoriteStatus ? 'modal-favorite-btn added' : 'modal-favorite-btn';
+        // const modalFavoriteBtn = document.getElementById('modal-favorite-btn');
+        // modalFavoriteBtn.innerText = currentFavoriteStatus ? 'Удалить из избранного' : 'Добавить в избранное';
+        // modalFavoriteBtn.className = currentFavoriteStatus ? 'modal-favorite-btn added' : 'modal-favorite-btn';
 
         // Показываем модальное окно
         document.getElementById('modal').style.display = 'block';
