@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ru.itis.servletlessontwo.dto.response.ListProductsResponse;
+import ru.itis.servletlessontwo.dto.response.ProductResponse;
 import ru.itis.servletlessontwo.dto.response.UserDataResponse;
 import ru.itis.servletlessontwo.model.OrdersEntity;
 import ru.itis.servletlessontwo.service.OrdersService;
@@ -15,6 +16,9 @@ import ru.itis.servletlessontwo.service.ProductService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @WebServlet("/orders")
 public class OrdersServlet extends HttpServlet {
@@ -37,8 +41,12 @@ public class OrdersServlet extends HttpServlet {
         List<OrdersEntity> ordersEntityList = ordersService.getOrdersByUserId(user.getId());
         ListProductsResponse listProductsResponse = productService.getAllProducts(user.getId());
 
+        // Преобразуем список в Map (ID продукта -> продукт)
+        Map<Long, ProductResponse> productMap = listProductsResponse.getProducts().stream()
+                .collect(Collectors.toMap(ProductResponse::getId, Function.identity()));
+
         session.setAttribute("orders", ordersEntityList);
-        session.setAttribute("products", listProductsResponse);
+        session.setAttribute("productMap", productMap);
 
         req.getRequestDispatcher("/jsp/orders.jsp").forward(req, resp);
     }

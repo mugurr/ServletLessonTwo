@@ -117,7 +117,15 @@
             <h2>Заказ #${order.id}</h2>
             <c:set var="productId" value="${order.productId}" />
             <div class="products">
-                <p>${sessionScope.products.products.get(productId).name} (${sessionScope.products.products.get(productId).price})</p>
+                <c:set var="product" value="${sessionScope.productMap[order.productId]}" />
+                <c:choose>
+                    <c:when test="${not empty product}">
+                        <p>${product.name} (${product.price})</p>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Продукт #${order.productId} не найден</p>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="status ${order.statusCode}">
                 <c:choose>
