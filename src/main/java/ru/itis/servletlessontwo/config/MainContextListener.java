@@ -17,14 +17,8 @@ import ru.itis.servletlessontwo.mapper.impl.ProductMapperImpl;
 import ru.itis.servletlessontwo.mapper.impl.UserMapperImpl;
 import ru.itis.servletlessontwo.repository.*;
 import ru.itis.servletlessontwo.repository.impl.*;
-import ru.itis.servletlessontwo.service.CategoryService;
-import ru.itis.servletlessontwo.service.FavoritesService;
-import ru.itis.servletlessontwo.service.ProductService;
-import ru.itis.servletlessontwo.service.UserService;
-import ru.itis.servletlessontwo.service.impl.CategoryServiceImpl;
-import ru.itis.servletlessontwo.service.impl.FavoritesServiceImpl;
-import ru.itis.servletlessontwo.service.impl.ProductServiceImpl;
-import ru.itis.servletlessontwo.service.impl.UserServiceImpl;
+import ru.itis.servletlessontwo.service.*;
+import ru.itis.servletlessontwo.service.impl.*;
 import ru.itis.servletlessontwo.utils.PropertyReader;
 
 import javax.sql.DataSource;
@@ -83,6 +77,9 @@ public class MainContextListener implements ServletContextListener {
 
         FavoritesService favoritesService = new FavoritesServiceImpl(favoritesRepository, productMapper);
         context.setAttribute("favoritesService", favoritesService);
+
+        OrdersService ordersService = new OrdersServiceImpl(ordersRepository);
+        context.setAttribute("ordersService", ordersService);
 
         List<String> PROTECTED_URIS = List.of(PropertyReader.getProperty("PROTECTED_URIS").split(","));
         context.setAttribute("PROTECTED_URIS", PROTECTED_URIS);
